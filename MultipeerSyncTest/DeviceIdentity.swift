@@ -6,7 +6,7 @@ import UIKit
 
 enum DeviceIdentity {
     static func currentDeviceID() -> String {
-        let key = "myram.sync.deviceID"
+        let key = "generic.sync.deviceID"
         if let existing = UserDefaults.standard.string(forKey: key) {
             return existing
         }

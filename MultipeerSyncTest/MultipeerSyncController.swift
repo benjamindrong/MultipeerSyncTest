@@ -1,13 +1,13 @@
 import Combine
 import MultipeerConnectivity
-import MyRAMSyncCore
+import SyncCore
 import SwiftUI
 
 @MainActor
 final class MultipeerSyncController: NSObject, ObservableObject {
-    @Published var noteText = ""
-    @Published var folderName = ""
-    @Published var pinnedHighlight = ""
+    @Published var itemText = ""
+    @Published var collectionName = ""
+    @Published var marker = ""
     @Published private(set) var availablePeers: [DiscoveredPeer] = []
     @Published private(set) var connectedPeers: [String] = []
     @Published private(set) var records: [DisplayedRecord] = []
@@ -15,11 +15,11 @@ final class MultipeerSyncController: NSObject, ObservableObject {
 
     let localPeerName: String
 
-    private let serviceType = "myram-sync"
+    private let serviceType = "generic-sync"
     private let peerID: MCPeerID
-    private let trustedPeerStore = UserDefaultsTrustedPeerStore(key: "myram.sync.trustedPeers")
-    private let syncStore = InMemoryMyRAMSyncStore()
-    private let syncEngine: MyRAMSyncEngine
+    private let trustedPeerStore = UserDefaultsTrustedPeerStore(key: "generic.sync.trustedPeers")
+    private let syncStore = InMemorySyncStore()
+    private let syncEngine: SyncEngine
     private let session: MCSession
     private let advertiser: MCNearbyServiceAdvertiser
     private let browser: MCNearbyServiceBrowser
@@ -34,7 +34,7 @@ final class MultipeerSyncController: NSObject, ObservableObject {
 
         localPeerName = deviceName
         peerID = peer
-        syncEngine = MyRAMSyncEngine(deviceID: storedDeviceID, store: syncStore)
+        syncEngine = SyncEngine(deviceID: storedDeviceID, store: syncStore)
         session = MCSession(peer: peer, securityIdentity: nil, encryptionPreference: .required)
         advertiser = MCNearbyServiceAdvertiser(peer: peer, discoveryInfo: nil, serviceType: serviceType)
         browser = MCNearbyServiceBrowser(peer: peer, serviceType: serviceType)
@@ -57,7 +57,7 @@ final class MultipeerSyncController: NSObject, ObservableObject {
         browser.invitePeer(peer.peerID, to: session, withContext: nil, timeout: 12)
     }
 
-    func save(entityType: MyRAMSyncEntityType, entityID: String, text: String) {
+    func save(entityType: SyncEntityType, entityID: String, text: String) {
         Task {
             guard let data = text.data(using: .utf8) else { return }
             _ = await syncEngine.recordLocalChange(
@@ -139,7 +139,7 @@ extension MultipeerSyncController: MCSessionDelegate {
 
     nonisolated func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         Task { @MainActor in
-            guard let envelope = try? JSONDecoder().decode(MyRAMSyncEnvelope.self, from: data) else { return }
+            guard let envelope = try? JSONDecoder().decode(SyncEnvelope.self, from: data) else { return }
             _ = await syncEngine.applyIncomingEnvelope(envelope)
             rememberTrustedPeer(peerID)
             refreshRecords()

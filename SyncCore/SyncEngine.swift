@@ -1,24 +1,24 @@
 import Foundation
 
-public final class MyRAMSyncEngine: @unchecked Sendable {
+public final class SyncEngine: @unchecked Sendable {
     public let deviceID: String
-    private let store: MyRAMSyncStore
-    private let queue: MyRAMSyncQueue
+    private let store: SyncStore
+    private let queue: SyncQueue
 
-    public init(deviceID: String, store: MyRAMSyncStore, queue: MyRAMSyncQueue = MyRAMSyncQueue()) {
+    public init(deviceID: String, store: SyncStore, queue: SyncQueue = SyncQueue()) {
         self.deviceID = deviceID
         self.store = store
         self.queue = queue
     }
 
     public func recordLocalChange(
-        entityType: MyRAMSyncEntityType,
+        entityType: SyncEntityType,
         entityID: String,
-        operation: MyRAMSyncOperation = .upsert,
+        operation: SyncOperation = .upsert,
         payload: Data,
         updatedAt: Date = Date()
-    ) async -> MyRAMSyncChange {
-        let change = MyRAMSyncChange(
+    ) async -> SyncChange {
+        let change = SyncChange(
             entityType: entityType,
             entityID: entityID,
             operation: operation,
@@ -32,18 +32,18 @@ public final class MyRAMSyncEngine: @unchecked Sendable {
         return change
     }
 
-    public func nextEnvelope(limit: Int = 100) async -> MyRAMSyncEnvelope? {
+    public func nextEnvelope(limit: Int = 100) async -> SyncEnvelope? {
         let changes = await queue.pendingBatch(limit: limit)
         guard !changes.isEmpty else { return nil }
-        return MyRAMSyncEnvelope(senderDeviceID: deviceID, changes: changes)
+        return SyncEnvelope(senderDeviceID: deviceID, changes: changes)
     }
 
-    public func markEnvelopeSent(_ envelope: MyRAMSyncEnvelope) async {
+    public func markEnvelopeSent(_ envelope: SyncEnvelope) async {
         await queue.markSent(envelope.changes)
     }
 
-    public func applyIncomingEnvelope(_ envelope: MyRAMSyncEnvelope) async -> MyRAMSyncApplyResult {
-        var result = MyRAMSyncApplyResult()
+    public func applyIncomingEnvelope(_ envelope: SyncEnvelope) async -> SyncApplyResult {
+        var result = SyncApplyResult()
 
         for change in envelope.changes {
             if await queue.hasApplied(change.id) {
@@ -68,7 +68,7 @@ public final class MyRAMSyncEngine: @unchecked Sendable {
         await queue.pendingCount()
     }
 
-    public func records() async -> [MyRAMSyncRecord] {
+    public func records() async -> [SyncRecord] {
         await store.allRecords()
     }
 }

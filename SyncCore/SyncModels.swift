@@ -1,30 +1,30 @@
 import Foundation
 
-public enum MyRAMSyncEntityType: String, Codable, CaseIterable, Sendable {
-    case note
-    case folder
-    case pinnedHighlight
+public enum SyncEntityType: String, Codable, CaseIterable, Sendable {
+    case item
+    case collection
+    case marker
 }
 
-public enum MyRAMSyncOperation: String, Codable, Sendable {
+public enum SyncOperation: String, Codable, Sendable {
     case upsert
     case delete
 }
 
-public struct MyRAMSyncChange: Codable, Equatable, Identifiable, Sendable {
+public struct SyncChange: Codable, Equatable, Identifiable, Sendable {
     public let id: UUID
-    public let entityType: MyRAMSyncEntityType
+    public let entityType: SyncEntityType
     public let entityID: String
-    public let operation: MyRAMSyncOperation
+    public let operation: SyncOperation
     public let payload: Data
     public let updatedAt: Date
     public let originDeviceID: String
 
     public init(
         id: UUID = UUID(),
-        entityType: MyRAMSyncEntityType,
+        entityType: SyncEntityType,
         entityID: String,
-        operation: MyRAMSyncOperation,
+        operation: SyncOperation,
         payload: Data,
         updatedAt: Date,
         originDeviceID: String
@@ -39,27 +39,27 @@ public struct MyRAMSyncChange: Codable, Equatable, Identifiable, Sendable {
     }
 }
 
-public struct MyRAMSyncEnvelope: Codable, Equatable, Sendable {
+public struct SyncEnvelope: Codable, Equatable, Sendable {
     public let senderDeviceID: String
     public let sentAt: Date
-    public let changes: [MyRAMSyncChange]
+    public let changes: [SyncChange]
 
-    public init(senderDeviceID: String, sentAt: Date = Date(), changes: [MyRAMSyncChange]) {
+    public init(senderDeviceID: String, sentAt: Date = Date(), changes: [SyncChange]) {
         self.senderDeviceID = senderDeviceID
         self.sentAt = sentAt
         self.changes = changes
     }
 }
 
-public struct MyRAMSyncRecord: Equatable, Sendable {
-    public let entityType: MyRAMSyncEntityType
+public struct SyncRecord: Equatable, Sendable {
+    public let entityType: SyncEntityType
     public let entityID: String
     public var payload: Data
     public var updatedAt: Date
     public var isDeleted: Bool
 
     public init(
-        entityType: MyRAMSyncEntityType,
+        entityType: SyncEntityType,
         entityID: String,
         payload: Data,
         updatedAt: Date,
@@ -73,7 +73,7 @@ public struct MyRAMSyncRecord: Equatable, Sendable {
     }
 }
 
-public struct MyRAMSyncApplyResult: Equatable, Sendable {
+public struct SyncApplyResult: Equatable, Sendable {
     public var appliedChangeIDs: [UUID]
     public var ignoredDuplicateIDs: [UUID]
     public var ignoredStaleIDs: [UUID]

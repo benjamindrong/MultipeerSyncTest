@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		010000000000000000000001 /* SyncModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000001 /* SyncModels.swift */; };
-		010000000000000000000002 /* MyRAMSyncStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000002 /* MyRAMSyncStore.swift */; };
-		010000000000000000000003 /* MyRAMSyncQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000003 /* MyRAMSyncQueue.swift */; };
-		010000000000000000000004 /* MyRAMSyncEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000004 /* MyRAMSyncEngine.swift */; };
+		010000000000000000000002 /* SyncStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000002 /* SyncStore.swift */; };
+		010000000000000000000003 /* SyncQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000003 /* SyncQueue.swift */; };
+		010000000000000000000004 /* SyncEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000004 /* SyncEngine.swift */; };
 		010000000000000000000005 /* TrustedPeerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000005 /* TrustedPeerStore.swift */; };
 		010000000000000000000006 /* DebouncedChangeSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000006 /* DebouncedChangeSender.swift */; };
 		010000000000000000000007 /* MultipeerSyncTestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000007 /* MultipeerSyncTestApp.swift */; };
@@ -18,10 +18,10 @@
 		010000000000000000000009 /* MultipeerSyncController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000009 /* MultipeerSyncController.swift */; };
 		01000000000000000000000A /* DeviceIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02000000000000000000000A /* DeviceIdentity.swift */; };
 		01000000000000000000000B /* DisplayedModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02000000000000000000000B /* DisplayedModels.swift */; };
-		01000000000000000000000C /* MyRAMSyncCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02000000000000000000000C /* MyRAMSyncCoreTests.swift */; };
-		01000000000000000000000D /* MyRAMSyncCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030000000000000000000001 /* MyRAMSyncCore.framework */; };
-		01000000000000000000000E /* MyRAMSyncCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030000000000000000000001 /* MyRAMSyncCore.framework */; };
-		01000000000000000000000F /* MyRAMSyncCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 030000000000000000000001 /* MyRAMSyncCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		01000000000000000000000C /* SyncCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02000000000000000000000C /* SyncCoreTests.swift */; };
+		01000000000000000000000D /* SyncCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030000000000000000000001 /* SyncCore.framework */; };
+		01000000000000000000000E /* SyncCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030000000000000000000001 /* SyncCore.framework */; };
+		01000000000000000000000F /* SyncCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 030000000000000000000001 /* SyncCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +30,7 @@
 			containerPortal = 050000000000000000000001 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 060000000000000000000001;
-			remoteInfo = MyRAMSyncCore;
+			remoteInfo = SyncCore;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -39,9 +39,9 @@
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubfolderSpec = 10;
+			dstSubcollectionSpec = 10;
 			files = (
-				01000000000000000000000F /* MyRAMSyncCore.framework in Embed Frameworks */,
+				01000000000000000000000F /* SyncCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -50,9 +50,9 @@
 
 /* Begin PBXFileReference section */
 		020000000000000000000001 /* SyncModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncModels.swift; sourceTree = "<group>"; };
-		020000000000000000000002 /* MyRAMSyncStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRAMSyncStore.swift; sourceTree = "<group>"; };
-		020000000000000000000003 /* MyRAMSyncQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRAMSyncQueue.swift; sourceTree = "<group>"; };
-		020000000000000000000004 /* MyRAMSyncEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRAMSyncEngine.swift; sourceTree = "<group>"; };
+		020000000000000000000002 /* SyncStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStore.swift; sourceTree = "<group>"; };
+		020000000000000000000003 /* SyncQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncQueue.swift; sourceTree = "<group>"; };
+		020000000000000000000004 /* SyncEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncEngine.swift; sourceTree = "<group>"; };
 		020000000000000000000005 /* TrustedPeerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustedPeerStore.swift; sourceTree = "<group>"; };
 		020000000000000000000006 /* DebouncedChangeSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncedChangeSender.swift; sourceTree = "<group>"; };
 		020000000000000000000007 /* MultipeerSyncTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerSyncTestApp.swift; sourceTree = "<group>"; };
@@ -60,12 +60,12 @@
 		020000000000000000000009 /* MultipeerSyncController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerSyncController.swift; sourceTree = "<group>"; };
 		02000000000000000000000A /* DeviceIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceIdentity.swift; sourceTree = "<group>"; };
 		02000000000000000000000B /* DisplayedModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayedModels.swift; sourceTree = "<group>"; };
-		02000000000000000000000C /* MyRAMSyncCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRAMSyncCoreTests.swift; sourceTree = "<group>"; };
+		02000000000000000000000C /* SyncCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncCoreTests.swift; sourceTree = "<group>"; };
 		02000000000000000000000D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		02000000000000000000000E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
-		030000000000000000000001 /* MyRAMSyncCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MyRAMSyncCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		030000000000000000000001 /* SyncCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SyncCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		030000000000000000000002 /* MultipeerSyncTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultipeerSyncTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		030000000000000000000003 /* MyRAMSyncCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyRAMSyncCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		030000000000000000000003 /* SyncCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SyncCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,7 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01000000000000000000000D /* MyRAMSyncCore.framework in Frameworks */,
+				01000000000000000000000D /* SyncCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,7 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01000000000000000000000E /* MyRAMSyncCore.framework in Frameworks */,
+				01000000000000000000000E /* SyncCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,24 +99,24 @@
 			isa = PBXGroup;
 			children = (
 				02000000000000000000000E /* README.md */,
-				090000000000000000000002 /* MyRAMSyncCore */,
+				090000000000000000000002 /* SyncCore */,
 				090000000000000000000003 /* MultipeerSyncTest */,
-				090000000000000000000004 /* MyRAMSyncCoreTests */,
+				090000000000000000000004 /* SyncCoreTests */,
 				090000000000000000000005 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		090000000000000000000002 /* MyRAMSyncCore */ = {
+		090000000000000000000002 /* SyncCore */ = {
 			isa = PBXGroup;
 			children = (
 				020000000000000000000001 /* SyncModels.swift */,
-				020000000000000000000002 /* MyRAMSyncStore.swift */,
-				020000000000000000000003 /* MyRAMSyncQueue.swift */,
-				020000000000000000000004 /* MyRAMSyncEngine.swift */,
+				020000000000000000000002 /* SyncStore.swift */,
+				020000000000000000000003 /* SyncQueue.swift */,
+				020000000000000000000004 /* SyncEngine.swift */,
 				020000000000000000000005 /* TrustedPeerStore.swift */,
 				020000000000000000000006 /* DebouncedChangeSender.swift */,
 			);
-			path = MyRAMSyncCore;
+			path = SyncCore;
 			sourceTree = "<group>";
 		};
 		090000000000000000000003 /* MultipeerSyncTest */ = {
@@ -132,20 +132,20 @@
 			path = MultipeerSyncTest;
 			sourceTree = "<group>";
 		};
-		090000000000000000000004 /* MyRAMSyncCoreTests */ = {
+		090000000000000000000004 /* SyncCoreTests */ = {
 			isa = PBXGroup;
 			children = (
-				02000000000000000000000C /* MyRAMSyncCoreTests.swift */,
+				02000000000000000000000C /* SyncCoreTests.swift */,
 			);
-			path = MyRAMSyncCoreTests;
+			path = SyncCoreTests;
 			sourceTree = "<group>";
 		};
 		090000000000000000000005 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				030000000000000000000001 /* MyRAMSyncCore.framework */,
+				030000000000000000000001 /* SyncCore.framework */,
 				030000000000000000000002 /* MultipeerSyncTest.app */,
-				030000000000000000000003 /* MyRAMSyncCoreTests.xctest */,
+				030000000000000000000003 /* SyncCoreTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -153,9 +153,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		060000000000000000000001 /* MyRAMSyncCore */ = {
+		060000000000000000000001 /* SyncCore */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 100000000000000000000002 /* Build configuration list for PBXNativeTarget "MyRAMSyncCore" */;
+			buildConfigurationList = 100000000000000000000002 /* Build configuration list for PBXNativeTarget "SyncCore" */;
 			buildPhases = (
 				110000000000000000000001 /* Sources */,
 				080000000000000000000001 /* Frameworks */,
@@ -164,9 +164,9 @@
 			);
 			dependencies = (
 			);
-			name = MyRAMSyncCore;
-			productName = MyRAMSyncCore;
-			productReference = 030000000000000000000001 /* MyRAMSyncCore.framework */;
+			name = SyncCore;
+			productName = SyncCore;
+			productReference = 030000000000000000000001 /* SyncCore.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		060000000000000000000002 /* MultipeerSyncTest */ = {
@@ -187,9 +187,9 @@
 			productReference = 030000000000000000000002 /* MultipeerSyncTest.app */;
 			productType = "com.apple.product-type.application";
 		};
-		060000000000000000000003 /* MyRAMSyncCoreTests */ = {
+		060000000000000000000003 /* SyncCoreTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 100000000000000000000004 /* Build configuration list for PBXNativeTarget "MyRAMSyncCoreTests" */;
+			buildConfigurationList = 100000000000000000000004 /* Build configuration list for PBXNativeTarget "SyncCoreTests" */;
 			buildPhases = (
 				110000000000000000000003 /* Sources */,
 				080000000000000000000003 /* Frameworks */,
@@ -199,9 +199,9 @@
 			dependencies = (
 				120000000000000000000002 /* PBXTargetDependency */,
 			);
-			name = MyRAMSyncCoreTests;
-			productName = MyRAMSyncCoreTests;
-			productReference = 030000000000000000000003 /* MyRAMSyncCoreTests.xctest */;
+			name = SyncCoreTests;
+			productName = SyncCoreTests;
+			productReference = 030000000000000000000003 /* SyncCoreTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -226,7 +226,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 100000000000000000000001 /* Build configuration list for PBXProject "MyRAMMultipeerSyncTest" */;
+			buildConfigurationList = 100000000000000000000001 /* Build configuration list for PBXProject "MultipeerSyncTest" */;
 			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -240,8 +240,8 @@
 			projectRoot = "";
 			targets = (
 				060000000000000000000002 /* MultipeerSyncTest */,
-				060000000000000000000001 /* MyRAMSyncCore */,
-				060000000000000000000003 /* MyRAMSyncCoreTests */,
+				060000000000000000000001 /* SyncCore */,
+				060000000000000000000003 /* SyncCoreTests */,
 			);
 		};
 /* End PBXProject section */
@@ -252,9 +252,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				010000000000000000000001 /* SyncModels.swift in Sources */,
-				010000000000000000000002 /* MyRAMSyncStore.swift in Sources */,
-				010000000000000000000003 /* MyRAMSyncQueue.swift in Sources */,
-				010000000000000000000004 /* MyRAMSyncEngine.swift in Sources */,
+				010000000000000000000002 /* SyncStore.swift in Sources */,
+				010000000000000000000003 /* SyncQueue.swift in Sources */,
+				010000000000000000000004 /* SyncEngine.swift in Sources */,
 				010000000000000000000005 /* TrustedPeerStore.swift in Sources */,
 				010000000000000000000006 /* DebouncedChangeSender.swift in Sources */,
 			);
@@ -276,7 +276,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01000000000000000000000C /* MyRAMSyncCoreTests.swift in Sources */,
+				01000000000000000000000C /* SyncCoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,12 +285,12 @@
 /* Begin PBXTargetDependency section */
 		120000000000000000000001 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 060000000000000000000001 /* MyRAMSyncCore */;
+			target = 060000000000000000000001 /* SyncCore */;
 			targetProxy = 040000000000000000000001 /* PBXContainerItemProxy */;
 		};
 		120000000000000000000002 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 060000000000000000000001 /* MyRAMSyncCore */;
+			target = 060000000000000000000001 /* SyncCore */;
 			targetProxy = 040000000000000000000001 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -426,7 +426,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
 				MACH_O_TYPE = mh_dylib;
-				PRODUCT_BUNDLE_IDENTIFIER = com.apexcoretechs.MyRAMSyncCore;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apexcoretechs.SyncCore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = YES;
@@ -442,7 +442,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GENERATE_INFOPLIST_FILE = YES;
 				MACH_O_TYPE = mh_dylib;
-				PRODUCT_BUNDLE_IDENTIFIER = com.apexcoretechs.MyRAMSyncCore;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apexcoretechs.SyncCore;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = YES;
@@ -491,7 +491,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.apexcoretechs.MyRAMSyncCoreTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apexcoretechs.SyncCoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2,6";
@@ -503,7 +503,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.apexcoretechs.MyRAMSyncCoreTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apexcoretechs.SyncCoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				TARGETED_DEVICE_FAMILY = "1,2,6";
@@ -513,7 +513,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		100000000000000000000001 /* Build configuration list for PBXProject "MyRAMMultipeerSyncTest" */ = {
+		100000000000000000000001 /* Build configuration list for PBXProject "MultipeerSyncTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				130000000000000000000001 /* Debug */,
@@ -522,7 +522,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		100000000000000000000002 /* Build configuration list for PBXNativeTarget "MyRAMSyncCore" */ = {
+		100000000000000000000002 /* Build configuration list for PBXNativeTarget "SyncCore" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				130000000000000000000003 /* Debug */,
@@ -540,7 +540,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		100000000000000000000004 /* Build configuration list for PBXNativeTarget "MyRAMSyncCoreTests" */ = {
+		100000000000000000000004 /* Build configuration list for PBXNativeTarget "SyncCoreTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				130000000000000000000007 /* Debug */,

@@ -22,10 +22,10 @@
 	<true/>
 	<key>NSBonjourServices</key>
 	<array>
-		<string>_myram-sync._tcp</string>
+		<string>_generic-sync._tcp</string>
 	</array>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>MyRAM Sync Test uses the local network to find and sync with nearby trusted devices.</string>
+	<string>Sync Test uses the local network to find and sync with nearby trusted devices.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

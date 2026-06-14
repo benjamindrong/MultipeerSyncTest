@@ -1,5 +1,5 @@
 import MultipeerConnectivity
-import MyRAMSyncCore
+import SyncCore
 import Foundation
 
 struct DiscoveredPeer: Identifiable {
@@ -17,7 +17,7 @@ struct DisplayedRecord: Identifiable {
     let value: String
     let updatedAt: Date
 
-    init(record: MyRAMSyncRecord) {
+    init(record: SyncRecord) {
         id = "\(record.entityType.rawValue)-\(record.entityID)"
         title = record.entityType.rawValue
         value = String(data: record.payload, encoding: .utf8) ?? "<binary>"

@@ -1,4 +1,4 @@
-import MyRAMSyncCore
+import SyncCore
 import SwiftUI
 
 struct ContentView: View {
@@ -12,33 +12,33 @@ struct ContentView: View {
                     VStack(alignment: .leading, spacing: 16) {
                         section("Local Changes") {
                             changeEditor(
-                                title: "Note",
-                                text: $controller.noteText,
-                                field: .note,
+                                title: "Item",
+                                text: $controller.itemText,
+                                field: .item,
                                 minHeight: max(120, proxy.size.height * 0.22),
-                                saveTitle: "Save Note"
+                                saveTitle: "Save Item"
                             ) {
-                                controller.save(entityType: .note, entityID: "demo-note", text: controller.noteText)
+                                controller.save(entityType: .item, entityID: "demo-item", text: controller.itemText)
                             }
 
                             changeEditor(
-                                title: "Folder",
-                                text: $controller.folderName,
-                                field: .folder,
+                                title: "Collection",
+                                text: $controller.collectionName,
+                                field: .collection,
                                 minHeight: 48,
-                                saveTitle: "Save Folder"
+                                saveTitle: "Save Collection"
                             ) {
-                                controller.save(entityType: .folder, entityID: "demo-folder", text: controller.folderName)
+                                controller.save(entityType: .collection, entityID: "demo-collection", text: controller.collectionName)
                             }
 
                             changeEditor(
-                                title: "Pinned Highlight",
-                                text: $controller.pinnedHighlight,
-                                field: .pinnedHighlight,
+                                title: "Marker",
+                                text: $controller.marker,
+                                field: .marker,
                                 minHeight: max(96, proxy.size.height * 0.16),
-                                saveTitle: "Save Highlight"
+                                saveTitle: "Save Marker"
                             ) {
-                                controller.save(entityType: .pinnedHighlight, entityID: "demo-pin", text: controller.pinnedHighlight)
+                                controller.save(entityType: .marker, entityID: "demo-marker", text: controller.marker)
                             }
                         }
 
@@ -104,7 +104,7 @@ struct ContentView: View {
                 .background(Color(.systemGroupedBackground))
                 .scrollDismissesKeyboard(.interactively)
             }
-            .navigationTitle("MyRAM Sync Test")
+            .navigationTitle("Sync Test")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -178,7 +178,7 @@ struct ContentView: View {
 }
 
 private enum EditableField: Hashable {
-    case note
-    case folder
-    case pinnedHighlight
+    case item
+    case collection
+    case marker
 }

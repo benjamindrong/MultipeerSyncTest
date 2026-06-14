@@ -1,6 +1,6 @@
-# MyRAM-MultipeerSyncTest
+# MultipeerSyncTest
 
-Minimal MultipeerConnectivity test app for proving nearby MyRAM synchronization before wiring the behavior into the production app.
+Minimal MultipeerConnectivity test app for proving nearby change-based synchronization without cloud services or external servers.
 
 ## Scope
 
@@ -15,9 +15,9 @@ Minimal MultipeerConnectivity test app for proving nearby MyRAM synchronization 
 
 ## Project Layout
 
-- `MyRAMSyncCore`: reusable sync module intended for use by both MyRAM and this test app.
+- `SyncCore`: reusable sync module shared by the test app and any host application that needs local change synchronization.
 - `MultipeerSyncTest`: SwiftUI app using MultipeerConnectivity for local peer discovery, pairing, reconnect, and message delivery.
-- `MyRAMSyncCoreTests`: focused tests for queueing, replay prevention, catch-up, and timestamp conflict behavior.
+- `SyncCoreTests`: focused tests for queueing, replay prevention, catch-up, and timestamp conflict behavior.
 
 ## Manual Verification
 
