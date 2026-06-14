@@ -39,7 +39,7 @@
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubcollectionSpec = 10;
+			dstSubfolderSpec = 10;
 			files = (
 				01000000000000000000000F /* SyncCore.framework in Embed Frameworks */,
 			);
