@@ -1,0 +1,554 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 60;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		010000000000000000000001 /* SyncModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000001 /* SyncModels.swift */; };
+		010000000000000000000002 /* MyRAMSyncStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000002 /* MyRAMSyncStore.swift */; };
+		010000000000000000000003 /* MyRAMSyncQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000003 /* MyRAMSyncQueue.swift */; };
+		010000000000000000000004 /* MyRAMSyncEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000004 /* MyRAMSyncEngine.swift */; };
+		010000000000000000000005 /* TrustedPeerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000005 /* TrustedPeerStore.swift */; };
+		010000000000000000000006 /* DebouncedChangeSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000006 /* DebouncedChangeSender.swift */; };
+		010000000000000000000007 /* MultipeerSyncTestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000007 /* MultipeerSyncTestApp.swift */; };
+		010000000000000000000008 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000008 /* ContentView.swift */; };
+		010000000000000000000009 /* MultipeerSyncController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020000000000000000000009 /* MultipeerSyncController.swift */; };
+		01000000000000000000000A /* DeviceIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02000000000000000000000A /* DeviceIdentity.swift */; };
+		01000000000000000000000B /* DisplayedModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02000000000000000000000B /* DisplayedModels.swift */; };
+		01000000000000000000000C /* MyRAMSyncCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02000000000000000000000C /* MyRAMSyncCoreTests.swift */; };
+		01000000000000000000000D /* MyRAMSyncCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030000000000000000000001 /* MyRAMSyncCore.framework */; };
+		01000000000000000000000E /* MyRAMSyncCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030000000000000000000001 /* MyRAMSyncCore.framework */; };
+		01000000000000000000000F /* MyRAMSyncCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 030000000000000000000001 /* MyRAMSyncCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		040000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 050000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 060000000000000000000001;
+			remoteInfo = MyRAMSyncCore;
+		};
+		040000000000000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 050000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 060000000000000000000002;
+			remoteInfo = MultipeerSyncTest;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		070000000000000000000001 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				01000000000000000000000F /* MyRAMSyncCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		020000000000000000000001 /* SyncModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncModels.swift; sourceTree = "<group>"; };
+		020000000000000000000002 /* MyRAMSyncStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRAMSyncStore.swift; sourceTree = "<group>"; };
+		020000000000000000000003 /* MyRAMSyncQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRAMSyncQueue.swift; sourceTree = "<group>"; };
+		020000000000000000000004 /* MyRAMSyncEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRAMSyncEngine.swift; sourceTree = "<group>"; };
+		020000000000000000000005 /* TrustedPeerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustedPeerStore.swift; sourceTree = "<group>"; };
+		020000000000000000000006 /* DebouncedChangeSender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncedChangeSender.swift; sourceTree = "<group>"; };
+		020000000000000000000007 /* MultipeerSyncTestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerSyncTestApp.swift; sourceTree = "<group>"; };
+		020000000000000000000008 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		020000000000000000000009 /* MultipeerSyncController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerSyncController.swift; sourceTree = "<group>"; };
+		02000000000000000000000A /* DeviceIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceIdentity.swift; sourceTree = "<group>"; };
+		02000000000000000000000B /* DisplayedModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayedModels.swift; sourceTree = "<group>"; };
+		02000000000000000000000C /* MyRAMSyncCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyRAMSyncCoreTests.swift; sourceTree = "<group>"; };
+		02000000000000000000000D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		02000000000000000000000E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		030000000000000000000001 /* MyRAMSyncCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MyRAMSyncCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		030000000000000000000002 /* MultipeerSyncTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultipeerSyncTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		030000000000000000000003 /* MyRAMSyncCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyRAMSyncCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		080000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		080000000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01000000000000000000000D /* MyRAMSyncCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		080000000000000000000003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01000000000000000000000E /* MyRAMSyncCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		090000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				02000000000000000000000E /* README.md */,
+				090000000000000000000002 /* MyRAMSyncCore */,
+				090000000000000000000003 /* MultipeerSyncTest */,
+				090000000000000000000004 /* MyRAMSyncCoreTests */,
+				090000000000000000000005 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		090000000000000000000002 /* MyRAMSyncCore */ = {
+			isa = PBXGroup;
+			children = (
+				020000000000000000000001 /* SyncModels.swift */,
+				020000000000000000000002 /* MyRAMSyncStore.swift */,
+				020000000000000000000003 /* MyRAMSyncQueue.swift */,
+				020000000000000000000004 /* MyRAMSyncEngine.swift */,
+				020000000000000000000005 /* TrustedPeerStore.swift */,
+				020000000000000000000006 /* DebouncedChangeSender.swift */,
+			);
+			path = MyRAMSyncCore;
+			sourceTree = "<group>";
+		};
+		090000000000000000000003 /* MultipeerSyncTest */ = {
+			isa = PBXGroup;
+			children = (
+				020000000000000000000007 /* MultipeerSyncTestApp.swift */,
+				020000000000000000000008 /* ContentView.swift */,
+				020000000000000000000009 /* MultipeerSyncController.swift */,
+				02000000000000000000000A /* DeviceIdentity.swift */,
+				02000000000000000000000B /* DisplayedModels.swift */,
+				02000000000000000000000D /* Info.plist */,
+			);
+			path = MultipeerSyncTest;
+			sourceTree = "<group>";
+		};
+		090000000000000000000004 /* MyRAMSyncCoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				02000000000000000000000C /* MyRAMSyncCoreTests.swift */,
+			);
+			path = MyRAMSyncCoreTests;
+			sourceTree = "<group>";
+		};
+		090000000000000000000005 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				030000000000000000000001 /* MyRAMSyncCore.framework */,
+				030000000000000000000002 /* MultipeerSyncTest.app */,
+				030000000000000000000003 /* MyRAMSyncCoreTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		060000000000000000000001 /* MyRAMSyncCore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 100000000000000000000002 /* Build configuration list for PBXNativeTarget "MyRAMSyncCore" */;
+			buildPhases = (
+				110000000000000000000001 /* Sources */,
+				080000000000000000000001 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MyRAMSyncCore;
+			productName = MyRAMSyncCore;
+			productReference = 030000000000000000000001 /* MyRAMSyncCore.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		060000000000000000000002 /* MultipeerSyncTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 100000000000000000000003 /* Build configuration list for PBXNativeTarget "MultipeerSyncTest" */;
+			buildPhases = (
+				110000000000000000000002 /* Sources */,
+				080000000000000000000002 /* Frameworks */,
+				070000000000000000000001 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				120000000000000000000001 /* PBXTargetDependency */,
+			);
+			name = MultipeerSyncTest;
+			productName = MultipeerSyncTest;
+			productReference = 030000000000000000000002 /* MultipeerSyncTest.app */;
+			productType = "com.apple.product-type.application";
+		};
+		060000000000000000000003 /* MyRAMSyncCoreTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 100000000000000000000004 /* Build configuration list for PBXNativeTarget "MyRAMSyncCoreTests" */;
+			buildPhases = (
+				110000000000000000000003 /* Sources */,
+				080000000000000000000003 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				120000000000000000000002 /* PBXTargetDependency */,
+			);
+			name = MyRAMSyncCoreTests;
+			productName = MyRAMSyncCoreTests;
+			productReference = 030000000000000000000003 /* MyRAMSyncCoreTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		050000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2650;
+				LastUpgradeCheck = 2650;
+				TargetAttributes = {
+					060000000000000000000001 = {
+						CreatedOnToolsVersion = 26.5;
+					};
+					060000000000000000000002 = {
+						CreatedOnToolsVersion = 26.5;
+					};
+					060000000000000000000003 = {
+						CreatedOnToolsVersion = 26.5;
+						TestTargetID = 060000000000000000000001;
+					};
+				};
+			};
+			buildConfigurationList = 100000000000000000000001 /* Build configuration list for PBXProject "MyRAMMultipeerSyncTest" */;
+			compatibilityVersion = "Xcode 15.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 090000000000000000000001;
+			productRefGroup = 090000000000000000000005 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				060000000000000000000002 /* MultipeerSyncTest */,
+				060000000000000000000001 /* MyRAMSyncCore */,
+				060000000000000000000003 /* MyRAMSyncCoreTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		110000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				010000000000000000000001 /* SyncModels.swift in Sources */,
+				010000000000000000000002 /* MyRAMSyncStore.swift in Sources */,
+				010000000000000000000003 /* MyRAMSyncQueue.swift in Sources */,
+				010000000000000000000004 /* MyRAMSyncEngine.swift in Sources */,
+				010000000000000000000005 /* TrustedPeerStore.swift in Sources */,
+				010000000000000000000006 /* DebouncedChangeSender.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		110000000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				010000000000000000000007 /* MultipeerSyncTestApp.swift in Sources */,
+				010000000000000000000008 /* ContentView.swift in Sources */,
+				010000000000000000000009 /* MultipeerSyncController.swift in Sources */,
+				01000000000000000000000A /* DeviceIdentity.swift in Sources */,
+				01000000000000000000000B /* DisplayedModels.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		110000000000000000000003 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01000000000000000000000C /* MyRAMSyncCoreTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		120000000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 060000000000000000000001 /* MyRAMSyncCore */;
+			targetProxy = 040000000000000000000001 /* PBXContainerItemProxy */;
+		};
+		120000000000000000000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 060000000000000000000001 /* MyRAMSyncCore */;
+			targetProxy = 040000000000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		130000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		130000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		130000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACH_O_TYPE = mh_dylib;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apexcoretechs.MyRAMSyncCore;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Debug;
+		};
+		130000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACH_O_TYPE = mh_dylib;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apexcoretechs.MyRAMSyncCore;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = YES;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Release;
+		};
+		130000000000000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MultipeerSyncTest/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apexcoretechs.MultipeerSyncTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Debug;
+		};
+		130000000000000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = MultipeerSyncTest/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apexcoretechs.MultipeerSyncTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Release;
+		};
+		130000000000000000000007 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apexcoretechs.MyRAMSyncCoreTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Debug;
+		};
+		130000000000000000000008 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.apexcoretechs.MyRAMSyncCoreTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		100000000000000000000001 /* Build configuration list for PBXProject "MyRAMMultipeerSyncTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				130000000000000000000001 /* Debug */,
+				130000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		100000000000000000000002 /* Build configuration list for PBXNativeTarget "MyRAMSyncCore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				130000000000000000000003 /* Debug */,
+				130000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		100000000000000000000003 /* Build configuration list for PBXNativeTarget "MultipeerSyncTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				130000000000000000000005 /* Debug */,
+				130000000000000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		100000000000000000000004 /* Build configuration list for PBXNativeTarget "MyRAMSyncCoreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				130000000000000000000007 /* Debug */,
+				130000000000000000000008 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 050000000000000000000001 /* Project object */;
+}
