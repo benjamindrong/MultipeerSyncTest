@@ -1,4 +1,4 @@
-import SyncCore
+import NearbySyncCore
 import SwiftUI
 
 struct ContentView: View {
@@ -340,7 +340,7 @@ private struct ConflictRow: View {
                 controller.restoreConflict(conflict)
             }
             .buttonStyle(.borderedProminent)
-            Button("Reviewed") {
+            Button("Keep Local") {
                 controller.markConflictReviewed(conflict)
             }
         }

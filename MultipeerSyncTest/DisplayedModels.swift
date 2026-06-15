@@ -1,5 +1,5 @@
 import MultipeerConnectivity
-import SyncCore
+import NearbySyncCore
 import Foundation
 
 struct DiscoveredPeer: Identifiable {

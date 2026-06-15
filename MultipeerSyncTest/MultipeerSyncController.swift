@@ -1,6 +1,6 @@
 import Combine
 import MultipeerConnectivity
-import SyncCore
+import NearbySyncCore
 import SwiftUI
 import UIKit
 
@@ -139,6 +139,17 @@ final class MultipeerSyncController: NSObject, ObservableObject {
     func markConflictReviewed(_ conflict: SyncTextConflictVersion) {
         Task {
             conflicts = await syncStore.removeConflict(id: conflict.id)
+            let localRecord = await syncStore.record(for: conflict.entityType, entityID: conflict.entityID)
+            await syncEngine.recordLocalChange(
+                entityType: conflict.entityType,
+                entityID: conflict.entityID,
+                operation: localRecord?.isDeleted == true ? .delete : .upsert,
+                payload: localRecord?.payload ?? Data(conflict.localText.utf8),
+                updatedAt: Date()
+            )
+            await updatePendingCount()
+            refreshRecords()
+            debouncedSender.schedule()
         }
     }
 
