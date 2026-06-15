@@ -20,7 +20,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 20) {
+                VStack(spacing: 14) {
                     LocalChangeSection(
                         selectedDraft: $selectedDraft,
                         text: selectedText,
@@ -33,19 +33,21 @@ struct ContentView: View {
                     ConflictsSection(controller: controller)
                     RecordsSection(controller: controller)
                 }
-                .padding()
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("Sync Test")
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         controller.refreshRecords()
                         controller.refreshConflicts()
                     } label: {
-                        Label("Refresh", systemImage: "arrow.clockwise")
+                        Image(systemName: "arrow.clockwise")
                     }
+                    .font(.body)
                 }
 
                 ToolbarItemGroup(placement: .keyboard) {
@@ -57,6 +59,7 @@ struct ContentView: View {
             }
             .scrollDismissesKeyboard(.interactively)
         }
+        .dynamicTypeSize(.medium ... .large)
     }
 
     private func saveSelectedDraft() {
@@ -94,10 +97,11 @@ private struct LocalChangeSection: View {
                     }
                 }
                 .pickerStyle(.segmented)
+                .controlSize(.small)
 
                 TextEditor(text: $text)
                     .focused(editorIsFocused)
-                    .frame(minHeight: 96, maxHeight: 150)
+                    .frame(height: 92)
                     .font(.body)
                     .padding(6)
                     .background(Color.secondary.opacity(0.08))
@@ -109,17 +113,28 @@ private struct LocalChangeSection: View {
 
                 VStack(spacing: 8) {
                     Button(action: save) {
-                        Label("Save \(selectedDraft.title)", systemImage: "arrow.triangle.2.circlepath")
+                        HStack(spacing: 8) {
+                            Image(systemName: "arrow.triangle.2.circlepath")
+                            Text("Save \(selectedDraft.title)")
+                        }
+                        .font(.subheadline.weight(.semibold))
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 8)
+                            .frame(height: 42)
                     }
                     .buttonStyle(.borderedProminent)
+                    .controlSize(.regular)
 
                     Button(role: .destructive, action: delete) {
-                        Label("Delete \(selectedDraft.title)", systemImage: "trash")
+                        HStack(spacing: 8) {
+                            Image(systemName: "trash")
+                            Text("Delete \(selectedDraft.title)")
+                        }
+                        .font(.subheadline.weight(.semibold))
                             .frame(maxWidth: .infinity)
+                            .frame(height: 38)
                     }
                     .buttonStyle(.bordered)
+                    .controlSize(.regular)
                 }
             }
             .padding(.top, 6)
@@ -154,10 +169,12 @@ private struct StatusSection: View {
                 } label: {
                     Label("Manual Sync", systemImage: "paperplane")
                         .frame(maxWidth: .infinity)
+                        .frame(height: 34)
                 }
                 .buttonStyle(.bordered)
+                .font(.subheadline.weight(.medium))
                 .disabled(controller.connectedPeers.isEmpty)
-                .padding(.top, 10)
+                .padding(.top, 8)
             }
             .padding(.top, 6)
         }
@@ -185,7 +202,7 @@ private struct InfoRow: View {
                 .multilineTextAlignment(.trailing)
                 .lineLimit(2)
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, 6)
     }
 }
 
