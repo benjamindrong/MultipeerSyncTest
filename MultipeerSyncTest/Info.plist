@@ -20,6 +20,8 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UILaunchScreen</key>
+	<dict/>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_generic-sync._tcp</string>

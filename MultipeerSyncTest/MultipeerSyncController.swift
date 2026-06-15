@@ -136,6 +136,21 @@ final class MultipeerSyncController: NSObject, ObservableObject {
         }
     }
 
+    func applyEditedConflict(_ conflict: SyncTextConflictVersion, text: String) {
+        Task {
+            conflicts = await syncStore.removeConflict(id: conflict.id)
+            await syncEngine.recordLocalChange(
+                entityType: conflict.entityType,
+                entityID: conflict.entityID,
+                payload: Data(text.utf8),
+                updatedAt: Date()
+            )
+            await updatePendingCount()
+            refreshRecords()
+            debouncedSender.schedule()
+        }
+    }
+
     func markConflictReviewed(_ conflict: SyncTextConflictVersion) {
         Task {
             conflicts = await syncStore.removeConflict(id: conflict.id)

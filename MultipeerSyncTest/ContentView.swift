@@ -5,6 +5,7 @@ struct ContentView: View {
     @EnvironmentObject private var controller: MultipeerSyncController
     @FocusState private var editorIsFocused: Bool
     @State private var selectedDraft = EditableDraft.item
+    private let contentSpacing: CGFloat = 14
 
     private var selectedText: Binding<String> {
         switch selectedDraft {
@@ -19,24 +20,22 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 14) {
-                    LocalChangeSection(
-                        selectedDraft: $selectedDraft,
-                        text: selectedText,
-                        editorIsFocused: $editorIsFocused,
-                        save: saveSelectedDraft,
-                        delete: deleteSelectedDraft
-                    )
-                    StatusSection(controller: controller)
-                    NearbyDevicesSection(controller: controller)
-                    ConflictsSection(controller: controller)
-                    RecordsSection(controller: controller)
+            GeometryReader { proxy in
+                ScrollView {
+                    Group {
+                        if proxy.size.width >= 700 {
+                            wideContent
+                        } else {
+                            compactContent
+                        }
+                    }
+                    .frame(maxWidth: .infinity, minHeight: proxy.size.height, alignment: .top)
+                    .padding(.horizontal, horizontalPadding(for: proxy.size.width))
+                    .padding(.vertical, 12)
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color(.systemGroupedBackground))
             }
-            .background(Color(.systemGroupedBackground))
             .navigationTitle("Sync Test")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -60,6 +59,60 @@ struct ContentView: View {
             .scrollDismissesKeyboard(.interactively)
         }
         .dynamicTypeSize(.medium ... .large)
+    }
+
+    private var compactContent: some View {
+        VStack(spacing: contentSpacing) {
+            localChangeSection
+            StatusSection(controller: controller)
+                .frame(maxWidth: .infinity)
+            NearbyDevicesSection(controller: controller)
+                .frame(maxWidth: .infinity)
+            ConflictsSection(controller: controller)
+                .frame(maxWidth: .infinity)
+            RecordsSection(controller: controller)
+                .frame(maxWidth: .infinity)
+        }
+    }
+
+    private var wideContent: some View {
+        Grid(alignment: .top, horizontalSpacing: contentSpacing, verticalSpacing: contentSpacing) {
+            GridRow {
+                localChangeSection
+                    .frame(maxWidth: .infinity)
+                StatusSection(controller: controller)
+                    .frame(maxWidth: .infinity)
+            }
+
+            GridRow {
+                NearbyDevicesSection(controller: controller)
+                    .frame(maxWidth: .infinity)
+                ConflictsSection(controller: controller)
+                    .frame(maxWidth: .infinity)
+            }
+
+            GridRow {
+                RecordsSection(controller: controller)
+                    .gridCellColumns(2)
+                    .frame(maxWidth: .infinity)
+            }
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private var localChangeSection: some View {
+        LocalChangeSection(
+            selectedDraft: $selectedDraft,
+            text: selectedText,
+            editorIsFocused: $editorIsFocused,
+            save: saveSelectedDraft,
+            delete: deleteSelectedDraft
+        )
+        .frame(maxWidth: .infinity)
+    }
+
+    private func horizontalPadding(for width: CGFloat) -> CGFloat {
+        width >= 700 ? 24 : 16
     }
 
     private func saveSelectedDraft() {
@@ -291,6 +344,8 @@ private struct ConflictsSection: View {
 private struct ConflictRow: View {
     let conflict: SyncTextConflictVersion
     @ObservedObject var controller: MultipeerSyncController
+    @State private var isEditing = false
+    @State private var editedText = ""
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -298,18 +353,25 @@ private struct ConflictRow: View {
                 Label(conflict.entityType.rawValue.capitalized, systemImage: "doc.text")
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(.secondary)
-
-                Spacer()
-
-                Text(conflict.remoteOperation == .delete ? "Delete" : "Edit")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(conflict.remoteOperation == .delete ? .red : .orange)
             }
 
-            Text(conflict.remoteText.isEmpty ? "Empty text" : conflict.remoteText)
-                .font(.subheadline)
-                .textSelection(.enabled)
-                .fixedSize(horizontal: false, vertical: true)
+            if isEditing {
+                TextEditor(text: $editedText)
+                    .frame(minHeight: 92)
+                    .font(.subheadline)
+                    .padding(6)
+                    .background(Color.secondary.opacity(0.08))
+                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                            .stroke(Color.secondary.opacity(0.12))
+                    )
+            } else {
+                Text(conflict.remoteText.isEmpty ? "Empty text" : conflict.remoteText)
+                    .font(.subheadline)
+                    .textSelection(.enabled)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
 
             Text("Local: \(conflict.localText.isEmpty ? "Empty text" : conflict.localText)")
                 .font(.caption)
@@ -333,15 +395,36 @@ private struct ConflictRow: View {
 
     private var conflictActions: some View {
         Group {
-            Button("Copy") {
-                controller.copyConflict(conflict)
-            }
-            Button("Restore") {
-                controller.restoreConflict(conflict)
-            }
-            .buttonStyle(.borderedProminent)
-            Button("Keep Local") {
-                controller.markConflictReviewed(conflict)
+            if isEditing {
+                Button("Save Edit") {
+                    controller.applyEditedConflict(conflict, text: editedText)
+                    isEditing = false
+                }
+                .buttonStyle(.borderedProminent)
+
+                Button("Cancel") {
+                    editedText = conflict.remoteText
+                    isEditing = false
+                }
+            } else {
+                Button("Edit") {
+                    editedText = conflict.remoteText
+                    isEditing = true
+                }
+                .disabled(conflict.remoteOperation == .delete)
+
+                Button("Copy") {
+                    controller.copyConflict(conflict)
+                }
+
+                Button("Restore") {
+                    controller.restoreConflict(conflict)
+                }
+                .buttonStyle(.borderedProminent)
+
+                Button("Keep Local") {
+                    controller.markConflictReviewed(conflict)
+                }
             }
         }
     }
