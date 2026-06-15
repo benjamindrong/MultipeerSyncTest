@@ -15,9 +15,9 @@ Minimal MultipeerConnectivity test app for proving nearby change-based synchroni
 
 ## Project Layout
 
-- `SyncCore`: reusable sync module shared by the test app and any host application that needs local change synchronization.
+- `../NearbySyncCore`: local Swift package shared by the test app and any host application that needs nearby change synchronization.
 - `MultipeerSyncTest`: SwiftUI app using MultipeerConnectivity for local peer discovery, pairing, reconnect, and message delivery.
-- `SyncCoreTests`: focused tests for queueing, replay prevention, catch-up, and timestamp conflict behavior.
+- `../NearbySyncCore/Tests`: focused package tests for queueing, replay prevention, catch-up, and timestamp conflict behavior.
 
 ## Manual Verification
 
