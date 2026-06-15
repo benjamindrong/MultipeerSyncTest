@@ -22,7 +22,7 @@ final class SyncCoreTests: XCTestCase {
         XCTAssertEqual(envelope?.changes, [change])
     }
 
-    func testSentEnvelopeClearsQueue() async {
+    func testAcknowledgedEnvelopeClearsQueue() async {
         let store = InMemorySyncStore()
         let engine = SyncEngine(deviceID: "device-a", store: store)
 
@@ -35,9 +35,24 @@ final class SyncCoreTests: XCTestCase {
         let envelope = await engine.nextEnvelope()
         XCTAssertEqual(await engine.pendingChangeCount(), 1)
 
-        await engine.markEnvelopeSent(XCTUnwrap(envelope))
+        await engine.acknowledgeChanges(XCTUnwrap(envelope).changes.map(\.id))
 
         XCTAssertEqual(await engine.pendingChangeCount(), 0)
+    }
+
+    func testSentEnvelopeStaysQueuedUntilAck() async {
+        let store = InMemorySyncStore()
+        let engine = SyncEngine(deviceID: "device-a", store: store)
+
+        _ = await engine.recordLocalChange(
+            entityType: .collection,
+            entityID: "collection-1",
+            payload: Data("Inbox".utf8)
+        )
+
+        _ = await engine.nextEnvelope()
+
+        XCTAssertEqual(await engine.pendingChangeCount(), 1)
     }
 
     func testDuplicateIncomingChangeIsNotAppliedTwice() async {
@@ -99,5 +114,43 @@ final class SyncCoreTests: XCTestCase {
 
         XCTAssertEqual(reconnectEnvelope?.changes.count, 2)
         XCTAssertEqual(await engine.pendingChangeCount(), 2)
+    }
+
+    func testLocalFirstTextStorePreservesRemoteTextConflict() async {
+        let conflictURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString, isDirectory: true)
+            .appendingPathComponent("sync-conflicts.json")
+        defer { try? FileManager.default.removeItem(at: conflictURL.deletingLastPathComponent()) }
+        let conflictStore = SyncTextConflictStore(fileURL: conflictURL)
+        let store = LocalFirstTextSyncStore(
+            localDeviceID: "device-a",
+            conflictStore: conflictStore,
+            seedRecords: [
+                SyncRecord(
+                    entityType: .item,
+                    entityID: "item-1",
+                    payload: Data("local".utf8),
+                    updatedAt: Date(timeIntervalSince1970: 100)
+                )
+            ]
+        )
+        let engine = SyncEngine(deviceID: "device-a", store: store)
+        let change = SyncChange(
+            entityType: .item,
+            entityID: "item-1",
+            operation: .upsert,
+            payload: Data("remote".utf8),
+            updatedAt: Date(timeIntervalSince1970: 200),
+            originDeviceID: "device-b"
+        )
+
+        let result = await engine.applyIncomingEnvelope(SyncEnvelope(senderDeviceID: "device-b", changes: [change]))
+
+        let record = await store.record(for: .item, entityID: "item-1")
+        let conflicts = await store.activeConflicts(now: Date(timeIntervalSince1970: 201))
+        XCTAssertEqual(record?.payload, Data("local".utf8))
+        XCTAssertEqual(result.ignoredStaleIDs, [change.id])
+        XCTAssertEqual(conflicts.first?.localText, "local")
+        XCTAssertEqual(conflicts.first?.remoteText, "remote")
     }
 }

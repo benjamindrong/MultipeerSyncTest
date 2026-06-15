@@ -14,32 +14,32 @@ struct ContentView: View {
                             changeEditor(
                                 title: "Item",
                                 text: $controller.itemText,
+                                entityType: .item,
+                                entityID: "demo-item",
                                 field: .item,
                                 minHeight: max(120, proxy.size.height * 0.22),
                                 saveTitle: "Save Item"
-                            ) {
-                                controller.save(entityType: .item, entityID: "demo-item", text: controller.itemText)
-                            }
+                            )
 
                             changeEditor(
                                 title: "Collection",
                                 text: $controller.collectionName,
+                                entityType: .collection,
+                                entityID: "demo-collection",
                                 field: .collection,
                                 minHeight: 48,
                                 saveTitle: "Save Collection"
-                            ) {
-                                controller.save(entityType: .collection, entityID: "demo-collection", text: controller.collectionName)
-                            }
+                            )
 
                             changeEditor(
                                 title: "Marker",
                                 text: $controller.marker,
+                                entityType: .marker,
+                                entityID: "demo-marker",
                                 field: .marker,
                                 minHeight: max(96, proxy.size.height * 0.16),
                                 saveTitle: "Save Marker"
-                            ) {
-                                controller.save(entityType: .marker, entityID: "demo-marker", text: controller.marker)
-                            }
+                            )
                         }
 
                         section("Connection") {
@@ -97,6 +97,17 @@ struct ContentView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         }
+
+                        section("Preserved Conflicts") {
+                            if controller.conflicts.isEmpty {
+                                Text("No preserved conflicts")
+                                    .foregroundStyle(.secondary)
+                            }
+
+                            ForEach(controller.conflicts) { conflict in
+                                conflictRow(conflict)
+                            }
+                        }
                     }
                     .frame(maxWidth: .infinity, minHeight: proxy.size.height, alignment: .top)
                     .padding(16)
@@ -110,6 +121,7 @@ struct ContentView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Refresh") {
                         controller.refreshRecords()
+                        controller.refreshConflicts()
                     }
                 }
 
@@ -146,10 +158,11 @@ struct ContentView: View {
     private func changeEditor(
         title: String,
         text: Binding<String>,
+        entityType: SyncEntityType,
+        entityID: String,
         field: EditableField,
         minHeight: CGFloat,
-        saveTitle: String,
-        save: @escaping () -> Void
+        saveTitle: String
     ) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
@@ -158,9 +171,16 @@ struct ContentView: View {
                 Spacer()
                 Button(saveTitle) {
                     focusedField = nil
-                    save()
+                    controller.save(entityType: entityType, entityID: entityID, text: text.wrappedValue)
                 }
                 .buttonStyle(.borderedProminent)
+                .controlSize(.small)
+
+                Button("Delete") {
+                    focusedField = nil
+                    controller.delete(entityType: entityType, entityID: entityID, text: text.wrappedValue)
+                }
+                .buttonStyle(.bordered)
                 .controlSize(.small)
             }
 
@@ -174,6 +194,74 @@ struct ContentView: View {
                 }
                 .frame(maxWidth: .infinity, minHeight: minHeight, alignment: .top)
         }
+    }
+
+    private func conflictRow(_ conflict: SyncTextConflictVersion) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("\(conflict.entityType.rawValue) / \(conflict.fieldID)")
+                        .font(.subheadline.weight(.semibold))
+                    Text(conflict.remoteOperation == .delete ? "Remote delete preserved" : "Remote edit preserved")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text(conflict.preservedAt.formatted(date: .abbreviated, time: .standard))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Remote")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                Text(conflict.remoteText.isEmpty ? "Empty text" : conflict.remoteText)
+                    .textSelection(.enabled)
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Local")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                Text(conflict.localText.isEmpty ? "Empty text" : conflict.localText)
+                    .textSelection(.enabled)
+            }
+
+            ViewThatFits(in: .horizontal) {
+                HStack {
+                    Button("Copy Remote") {
+                        controller.copyConflict(conflict)
+                    }
+                    Button("Restore Remote") {
+                        controller.restoreConflict(conflict)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    Button("Reviewed") {
+                        controller.markConflictReviewed(conflict)
+                    }
+                }
+                VStack(alignment: .leading) {
+                    Button("Copy Remote") {
+                        controller.copyConflict(conflict)
+                    }
+                    Button("Restore Remote") {
+                        controller.restoreConflict(conflict)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    Button("Reviewed") {
+                        controller.markConflictReviewed(conflict)
+                    }
+                }
+            }
+            .buttonStyle(.bordered)
+            .controlSize(.small)
+        }
+        .padding(10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color(.tertiarySystemGroupedBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
     }
 }
 
