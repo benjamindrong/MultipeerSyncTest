@@ -425,6 +425,10 @@ private struct ConflictRow: View {
                 Button("Keep Local") {
                     controller.markConflictReviewed(conflict)
                 }
+
+                Button("Discard", role: .destructive) {
+                    controller.discardConflict(conflict)
+                }
             }
         }
     }

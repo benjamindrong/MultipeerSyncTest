@@ -80,7 +80,7 @@ final class MultipeerSyncController: NSObject, ObservableObject {
             )
             await updatePendingCount()
             refreshRecords()
-            debouncedSender.schedule()
+            await debouncedSender.schedule()
         }
     }
 
@@ -96,12 +96,14 @@ final class MultipeerSyncController: NSObject, ObservableObject {
             )
             await updatePendingCount()
             refreshRecords()
-            debouncedSender.schedule()
+            await debouncedSender.schedule()
         }
     }
 
     func flushPendingChanges() {
-        debouncedSender.flushNow()
+        Task {
+            await debouncedSender.flushNow()
+        }
     }
 
     func refreshRecords() {
@@ -124,15 +126,8 @@ final class MultipeerSyncController: NSObject, ObservableObject {
     func restoreConflict(_ conflict: SyncTextConflictVersion) {
         Task {
             conflicts = await syncStore.restore(conflict)
-            await syncEngine.recordLocalChange(
-                entityType: conflict.entityType,
-                entityID: conflict.entityID,
-                payload: Data(conflict.remoteText.utf8),
-                updatedAt: Date()
-            )
             await updatePendingCount()
             refreshRecords()
-            debouncedSender.schedule()
         }
     }
 
@@ -147,25 +142,20 @@ final class MultipeerSyncController: NSObject, ObservableObject {
             )
             await updatePendingCount()
             refreshRecords()
-            debouncedSender.schedule()
+            await debouncedSender.schedule()
         }
     }
 
     func markConflictReviewed(_ conflict: SyncTextConflictVersion) {
         Task {
             conflicts = await syncStore.removeConflict(id: conflict.id)
-            let localRecord = await syncStore.record(for: conflict.entityType, entityID: conflict.entityID)
-            await syncEngine.recordLocalChange(
-                entityType: conflict.entityType,
-                entityID: conflict.entityID,
-                operation: localRecord?.isDeleted == true ? .delete : .upsert,
-                payload: localRecord?.payload ?? Data(conflict.localText.utf8),
-                updatedAt: Date()
-            )
             await updatePendingCount()
             refreshRecords()
-            debouncedSender.schedule()
         }
+    }
+
+    func discardConflict(_ conflict: SyncTextConflictVersion) {
+        markConflictReviewed(conflict)
     }
 
     private func sendPendingChanges() async {
@@ -205,6 +195,7 @@ final class MultipeerSyncController: NSObject, ObservableObject {
         do {
             let data = try JSONEncoder().encode(envelope)
             try session.send(data, toPeers: [peerID], with: .reliable)
+            await syncEngine.markAcknowledgementSent(changes.map(\.id))
         } catch {
             // Keep the sender queue intact; it can retry later.
         }
@@ -259,7 +250,6 @@ extension MultipeerSyncController: MCSessionDelegate {
     nonisolated func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         Task { @MainActor in
             guard let envelope = try? JSONDecoder().decode(SyncEnvelope.self, from: data) else { return }
-            await syncEngine.acknowledgeChanges(envelope.acknowledgedChangeIDs)
             _ = await syncEngine.applyIncomingEnvelope(envelope)
             await sendAcknowledgement(for: envelope.changes, to: peerID)
             rememberTrustedPeer(peerID)
