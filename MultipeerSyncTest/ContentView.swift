@@ -442,10 +442,6 @@ private struct ConflictRow: View {
                 Button("Keep Current") {
                     controller.markConflictReviewed(conflict)
                 }
-
-                Button("Discard Incoming", role: .destructive) {
-                    controller.discardConflict(conflict)
-                }
             }
         }
     }
