@@ -155,11 +155,12 @@ final class MultipeerSyncController: NSObject, ObservableObject {
         Task {
             // Accept Incoming publishes the incoming text as the selected winner
             // so peers converge instead of only clearing this device's alert.
+            let resolution = SyncTextConflictResolver.resolve(conflict, choice: .acceptIncoming)
             conflicts = await syncStore.restore(conflict)
             await recordConflictResolution(
                 conflict,
-                resolvedText: conflict.remoteText,
-                baseText: conflict.localText
+                resolvedText: resolution.resolvedText,
+                baseText: resolution.baseText
             )
             await updatePendingCount()
             refreshRecords()
@@ -170,12 +171,20 @@ final class MultipeerSyncController: NSObject, ObservableObject {
 
     func applyEditedConflict(_ conflict: SyncTextConflictVersion, text: String) {
         Task {
+            let resolution = SyncTextConflictResolver.resolve(
+                conflict,
+                choice: .keepLocal(currentLocalText: text)
+            )
             conflicts = await syncStore.removeResolvedConflict(conflict)
-            await recordChosenConflictText(conflict, text: text, baseText: conflict.remoteText)
+            await recordChosenConflictText(
+                conflict,
+                text: resolution.resolvedText,
+                baseText: resolution.baseText
+            )
             await recordConflictResolution(
                 conflict,
-                resolvedText: text,
-                baseText: conflict.remoteText
+                resolvedText: resolution.resolvedText,
+                baseText: resolution.baseText
             )
             await updatePendingCount()
             refreshRecords()
@@ -188,17 +197,20 @@ final class MultipeerSyncController: NSObject, ObservableObject {
         Task {
             // Keep Current is an active resolution. It publishes this device's
             // chosen text as the winner, then clears the conflict everywhere.
-            let resolvedText = currentText(for: conflict)
+            let resolution = SyncTextConflictResolver.resolve(
+                conflict,
+                choice: .keepLocal(currentLocalText: currentText(for: conflict))
+            )
             conflicts = await syncStore.removeResolvedConflict(conflict)
             await recordChosenConflictText(
                 conflict,
-                text: resolvedText,
-                baseText: conflict.remoteText
+                text: resolution.resolvedText,
+                baseText: resolution.baseText
             )
             await recordConflictResolution(
                 conflict,
-                resolvedText: resolvedText,
-                baseText: conflict.remoteText
+                resolvedText: resolution.resolvedText,
+                baseText: resolution.baseText
             )
             await updatePendingCount()
             refreshRecords()
