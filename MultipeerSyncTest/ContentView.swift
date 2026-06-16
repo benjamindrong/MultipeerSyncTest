@@ -364,16 +364,22 @@ private struct ConflictRow: View {
             }
 
             if isEditing {
-                TextEditor(text: $editedText)
-                    .frame(minHeight: 92)
-                    .font(.subheadline)
-                    .padding(6)
-                    .background(Color.secondary.opacity(0.08))
-                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .stroke(Color.secondary.opacity(0.12))
-                    )
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Incoming Sync")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.secondary)
+
+                    TextEditor(text: $editedText)
+                        .frame(minHeight: 92)
+                        .font(.subheadline)
+                        .padding(6)
+                        .background(Color.secondary.opacity(0.08))
+                        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .stroke(Color.secondary.opacity(0.12))
+                        )
+                }
             } else {
                 conflictTextBlock(title: "Current Version", text: currentText)
                 conflictTextBlock(title: "Incoming Sync", text: otherText)

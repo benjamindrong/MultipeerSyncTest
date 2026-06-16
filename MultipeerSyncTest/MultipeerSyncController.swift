@@ -148,11 +148,7 @@ final class MultipeerSyncController: NSObject, ObservableObject {
     }
 
     func otherText(for conflict: SyncTextConflictVersion) -> String {
-        let current = currentText(for: conflict)
-        if current == conflict.remoteText {
-            return conflict.localText
-        }
-        return conflict.remoteText
+        conflict.remoteText
     }
 
     func restoreConflict(_ conflict: SyncTextConflictVersion) {
@@ -160,7 +156,11 @@ final class MultipeerSyncController: NSObject, ObservableObject {
             // Accept Incoming publishes the incoming text as the selected winner
             // so peers converge instead of only clearing this device's alert.
             conflicts = await syncStore.restore(conflict)
-            await recordConflictResolution(conflict, resolvedText: conflict.remoteText, baseText: conflict.localText)
+            await recordConflictResolution(
+                conflict,
+                resolvedText: conflict.remoteText,
+                baseText: conflict.localText
+            )
             await updatePendingCount()
             refreshRecords()
             refreshDraftText()
@@ -170,10 +170,13 @@ final class MultipeerSyncController: NSObject, ObservableObject {
 
     func applyEditedConflict(_ conflict: SyncTextConflictVersion, text: String) {
         Task {
-            let baseText = currentText(for: conflict)
-            conflicts = await syncStore.removeConflict(id: conflict.id)
-            await recordChosenConflictText(conflict, text: text, baseText: baseText)
-            await recordConflictResolution(conflict, resolvedText: text, baseText: baseText)
+            conflicts = await syncStore.removeResolvedConflict(conflict)
+            await recordChosenConflictText(conflict, text: text, baseText: conflict.remoteText)
+            await recordConflictResolution(
+                conflict,
+                resolvedText: text,
+                baseText: conflict.remoteText
+            )
             await updatePendingCount()
             refreshRecords()
             refreshDraftText()
@@ -186,14 +189,17 @@ final class MultipeerSyncController: NSObject, ObservableObject {
             // Keep Current is an active resolution. It publishes this device's
             // chosen text as the winner, then clears the conflict everywhere.
             let resolvedText = currentText(for: conflict)
-            let baseText = otherText(for: conflict)
-            conflicts = await syncStore.removeConflict(id: conflict.id)
+            conflicts = await syncStore.removeResolvedConflict(conflict)
             await recordChosenConflictText(
                 conflict,
                 text: resolvedText,
-                baseText: baseText
+                baseText: conflict.remoteText
             )
-            await recordConflictResolution(conflict, resolvedText: resolvedText, baseText: baseText)
+            await recordConflictResolution(
+                conflict,
+                resolvedText: resolvedText,
+                baseText: conflict.remoteText
+            )
             await updatePendingCount()
             refreshRecords()
             refreshDraftText()
