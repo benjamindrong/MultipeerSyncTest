@@ -347,6 +347,14 @@ private struct ConflictRow: View {
     @State private var isEditing = false
     @State private var editedText = ""
 
+    private var currentText: String {
+        controller.currentText(for: conflict)
+    }
+
+    private var otherText: String {
+        controller.otherText(for: conflict)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(alignment: .firstTextBaseline) {
@@ -367,17 +375,9 @@ private struct ConflictRow: View {
                             .stroke(Color.secondary.opacity(0.12))
                     )
             } else {
-                Text(conflict.remoteText.isEmpty ? "Empty text" : conflict.remoteText)
-                    .font(.subheadline)
-                    .textSelection(.enabled)
-                    .fixedSize(horizontal: false, vertical: true)
+                conflictTextBlock(title: "Current Version", text: currentText)
+                conflictTextBlock(title: "Incoming Sync", text: otherText)
             }
-
-            Text("Local: \(conflict.localText.isEmpty ? "Empty text" : conflict.localText)")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .textSelection(.enabled)
-                .fixedSize(horizontal: false, vertical: true)
 
             ViewThatFits(in: .horizontal) {
                 HStack {
@@ -393,6 +393,23 @@ private struct ConflictRow: View {
         .padding(.vertical, 10)
     }
 
+    private func conflictTextBlock(title: String, text: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+
+            Text(text.isEmpty ? "Empty text" : text)
+                .font(.subheadline)
+                .textSelection(.enabled)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(8)
+                .background(Color.secondary.opacity(0.08))
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+        }
+    }
+
     private var conflictActions: some View {
         Group {
             if isEditing {
@@ -403,30 +420,30 @@ private struct ConflictRow: View {
                 .buttonStyle(.borderedProminent)
 
                 Button("Cancel") {
-                    editedText = conflict.remoteText
+                    editedText = otherText
                     isEditing = false
                 }
             } else {
-                Button("Edit") {
-                    editedText = conflict.remoteText
+                Button("Edit Incoming") {
+                    editedText = otherText
                     isEditing = true
                 }
                 .disabled(conflict.remoteOperation == .delete)
 
-                Button("Copy") {
+                Button("Copy Incoming") {
                     controller.copyConflict(conflict)
                 }
 
-                Button("Restore") {
-                    controller.restoreConflict(conflict)
+                Button("Accept Incoming") {
+                    controller.applyEditedConflict(conflict, text: otherText)
                 }
                 .buttonStyle(.borderedProminent)
 
-                Button("Keep Local") {
+                Button("Keep Current") {
                     controller.markConflictReviewed(conflict)
                 }
 
-                Button("Discard", role: .destructive) {
+                Button("Discard Incoming", role: .destructive) {
                     controller.discardConflict(conflict)
                 }
             }

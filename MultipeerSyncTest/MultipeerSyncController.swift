@@ -59,6 +59,7 @@ final class MultipeerSyncController: NSObject, ObservableObject {
         browser.startBrowsingForPeers()
         refreshRecords()
         refreshConflicts()
+        refreshDraftText()
     }
 
     var connectionSummary: String {
@@ -71,7 +72,7 @@ final class MultipeerSyncController: NSObject, ObservableObject {
 
     func save(entityType: SyncEntityType, entityID: String, text: String) {
         Task {
-            guard let data = text.data(using: .utf8) else { return }
+            guard let data = await textPayloadData(entityType: entityType, entityID: entityID, text: text) else { return }
             _ = await syncEngine.recordLocalChange(
                 entityType: entityType,
                 entityID: entityID,
@@ -80,13 +81,14 @@ final class MultipeerSyncController: NSObject, ObservableObject {
             )
             await updatePendingCount()
             refreshRecords()
+            refreshDraftText()
             await debouncedSender.schedule()
         }
     }
 
     func delete(entityType: SyncEntityType, entityID: String, text: String) {
         Task {
-            guard let data = text.data(using: .utf8) else { return }
+            guard let data = await textPayloadData(entityType: entityType, entityID: entityID, text: text) else { return }
             _ = await syncEngine.recordLocalChange(
                 entityType: entityType,
                 entityID: entityID,
@@ -96,6 +98,7 @@ final class MultipeerSyncController: NSObject, ObservableObject {
             )
             await updatePendingCount()
             refreshRecords()
+            refreshDraftText()
             await debouncedSender.schedule()
         }
     }
@@ -113,6 +116,14 @@ final class MultipeerSyncController: NSObject, ObservableObject {
         }
     }
 
+    func refreshDraftText() {
+        Task {
+            itemText = await text(for: .item, entityID: "demo-item")
+            collectionName = await text(for: .collection, entityID: "demo-collection")
+            marker = await text(for: .marker, entityID: "demo-marker")
+        }
+    }
+
     func refreshConflicts() {
         Task {
             conflicts = await syncStore.activeConflicts()
@@ -120,37 +131,73 @@ final class MultipeerSyncController: NSObject, ObservableObject {
     }
 
     func copyConflict(_ conflict: SyncTextConflictVersion) {
-        UIPasteboard.general.string = conflict.remoteText
+        UIPasteboard.general.string = otherText(for: conflict)
+    }
+
+    func currentText(for conflict: SyncTextConflictVersion) -> String {
+        switch (conflict.entityType, conflict.entityID) {
+        case (.item, "demo-item"):
+            itemText
+        case (.collection, "demo-collection"):
+            collectionName
+        case (.marker, "demo-marker"):
+            marker
+        default:
+            records.first { $0.id == "\(conflict.entityType.rawValue)-\(conflict.entityID)" }?.value ?? ""
+        }
+    }
+
+    func otherText(for conflict: SyncTextConflictVersion) -> String {
+        let current = currentText(for: conflict)
+        if current == conflict.remoteText {
+            return conflict.localText
+        }
+        return conflict.remoteText
     }
 
     func restoreConflict(_ conflict: SyncTextConflictVersion) {
         Task {
+            // Accept Incoming publishes the incoming text as the selected winner
+            // so peers converge instead of only clearing this device's alert.
             conflicts = await syncStore.restore(conflict)
+            await recordConflictResolution(conflict, resolvedText: conflict.remoteText, baseText: conflict.localText)
             await updatePendingCount()
             refreshRecords()
+            refreshDraftText()
+            await debouncedSender.schedule()
         }
     }
 
     func applyEditedConflict(_ conflict: SyncTextConflictVersion, text: String) {
         Task {
+            let baseText = currentText(for: conflict)
             conflicts = await syncStore.removeConflict(id: conflict.id)
-            await syncEngine.recordLocalChange(
-                entityType: conflict.entityType,
-                entityID: conflict.entityID,
-                payload: Data(text.utf8),
-                updatedAt: Date()
-            )
+            await recordChosenConflictText(conflict, text: text, baseText: baseText)
+            await recordConflictResolution(conflict, resolvedText: text, baseText: baseText)
             await updatePendingCount()
             refreshRecords()
+            refreshDraftText()
             await debouncedSender.schedule()
         }
     }
 
     func markConflictReviewed(_ conflict: SyncTextConflictVersion) {
         Task {
+            // Keep Current is an active resolution. It publishes this device's
+            // chosen text as the winner, then clears the conflict everywhere.
+            let resolvedText = currentText(for: conflict)
+            let baseText = otherText(for: conflict)
             conflicts = await syncStore.removeConflict(id: conflict.id)
+            await recordChosenConflictText(
+                conflict,
+                text: resolvedText,
+                baseText: baseText
+            )
+            await recordConflictResolution(conflict, resolvedText: resolvedText, baseText: baseText)
             await updatePendingCount()
             refreshRecords()
+            refreshDraftText()
+            await debouncedSender.schedule()
         }
     }
 
@@ -181,6 +228,63 @@ final class MultipeerSyncController: NSObject, ObservableObject {
 
     private func updatePendingCount() async {
         pendingChangeCount = await syncEngine.pendingChangeCount()
+    }
+
+    private func textPayloadData(entityType: SyncEntityType, entityID: String, text: String) async -> Data? {
+        try? await syncStore.textPayloadData(entityType: entityType, entityID: entityID, text: text)
+    }
+
+    private func text(for entityType: SyncEntityType, entityID: String) async -> String {
+        guard let record = await syncEngine.record(for: entityType, entityID: entityID),
+              !record.isDeleted else { return "" }
+        return String(data: record.payload, encoding: .utf8) ?? ""
+    }
+
+    private func recordChosenConflictText(
+        _ conflict: SyncTextConflictVersion,
+        text: String,
+        baseText: String
+    ) async {
+        guard let data = try? SyncTextPayload(text: text, baseText: baseText).encoded() else { return }
+        _ = await syncEngine.recordLocalChange(
+            entityType: conflict.entityType,
+            entityID: conflict.entityID,
+            payload: data,
+            updatedAt: Date()
+        )
+    }
+
+    private func recordConflictPreserved(_ conflict: SyncTextConflictVersion) async {
+        guard let data = try? SyncTextConflictPayload(
+            action: .preserved,
+            conflict: conflict,
+            updatedAt: conflict.preservedAt
+        ).encoded() else { return }
+        _ = await syncEngine.recordLocalChange(
+            entityType: .conflict,
+            entityID: conflict.id.uuidString,
+            payload: data,
+            updatedAt: conflict.preservedAt
+        )
+    }
+
+    private func recordConflictResolution(
+        _ conflict: SyncTextConflictVersion,
+        resolvedText: String,
+        baseText: String
+    ) async {
+        guard let data = try? SyncTextConflictPayload(
+            action: .resolved,
+            conflict: conflict,
+            resolvedText: resolvedText,
+            baseText: baseText
+        ).encoded() else { return }
+        _ = await syncEngine.recordLocalChange(
+            entityType: .conflict,
+            entityID: conflict.id.uuidString,
+            payload: data,
+            updatedAt: Date()
+        )
     }
 
     private func sendAcknowledgement(for changes: [SyncChange], to peerID: MCPeerID) async {
@@ -250,12 +354,31 @@ extension MultipeerSyncController: MCSessionDelegate {
     nonisolated func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         Task { @MainActor in
             guard let envelope = try? JSONDecoder().decode(SyncEnvelope.self, from: data) else { return }
-            _ = await syncEngine.applyIncomingEnvelope(envelope)
+            let result = await syncEngine.applyIncomingEnvelope(envelope)
+            for conflict in result.preservedConflicts {
+                await recordConflictPreserved(conflict)
+            }
             await sendAcknowledgement(for: envelope.changes, to: peerID)
             rememberTrustedPeer(peerID)
             await updatePendingCount()
             refreshRecords()
+            if shouldRefreshDraftText(after: result, envelope: envelope) {
+                refreshDraftText()
+            }
             refreshConflicts()
+            if !result.preservedConflicts.isEmpty {
+                await debouncedSender.schedule()
+            }
+        }
+    }
+
+    private func shouldRefreshDraftText(after result: SyncApplyResult, envelope: SyncEnvelope) -> Bool {
+        let appliedIDs = Set(result.appliedChangeIDs)
+        return envelope.changes.contains { change in
+            guard appliedIDs.contains(change.id) else { return false }
+            if change.entityType != .conflict { return true }
+            guard let payload = try? SyncTextConflictPayload.decode(from: change.payload) else { return false }
+            return payload.action == .resolved && payload.resolvedText != nil
         }
     }
 
