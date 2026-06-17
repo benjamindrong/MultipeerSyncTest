@@ -365,7 +365,7 @@ private struct ConflictRow: View {
 
             if isEditing {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Incoming Sync")
+                    Text("Merged Result")
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(.secondary)
 
@@ -381,8 +381,9 @@ private struct ConflictRow: View {
                         )
                 }
             } else {
-                conflictTextBlock(title: "Current Version", text: currentText)
-                conflictTextBlock(title: "Incoming Sync", text: otherText)
+                conflictTextBlock(title: "Local Version", text: currentText)
+                conflictTextBlock(title: "Version to Sync", text: otherText)
+                conflictTextBlock(title: "Merged Result", text: otherText)
             }
 
             ViewThatFits(in: .horizontal) {
@@ -419,7 +420,7 @@ private struct ConflictRow: View {
     private var conflictActions: some View {
         Group {
             if isEditing {
-                Button("Save Edit") {
+                Button("Save Merged Result") {
                     controller.applyEditedConflict(conflict, text: editedText)
                     isEditing = false
                 }
@@ -430,22 +431,22 @@ private struct ConflictRow: View {
                     isEditing = false
                 }
             } else {
-                Button("Edit Incoming") {
+                Button("Edit Merged Result") {
                     editedText = otherText
                     isEditing = true
                 }
                 .disabled(conflict.remoteOperation == .delete)
 
-                Button("Copy Incoming") {
+                Button("Copy Version to Sync") {
                     controller.copyConflict(conflict)
                 }
 
-                Button("Accept Incoming") {
+                Button("Use Version to Sync") {
                     controller.applyEditedConflict(conflict, text: otherText)
                 }
                 .buttonStyle(.borderedProminent)
 
-                Button("Keep Current") {
+                Button("Keep Local") {
                     controller.markConflictReviewed(conflict)
                 }
             }
